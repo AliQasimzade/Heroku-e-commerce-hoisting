@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000;
 
 require("firebase/app");
 require("firebase/database");
-
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 var cors = require("cors");
