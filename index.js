@@ -2,14 +2,27 @@ const express = require("express");
 const app = express();
 const firebase = require("firebase");
 const port = process.env.PORT || 3000;
-
+const bodyParser = require('body-parser');
 require("firebase/app");
 require("firebase/database");
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-var cors = require("cors");
-app.use(cors({ origin: "*" }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//CORS 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+    );
+    next();
+  });
+// var cors = require("cors");
+// app.use(cors({ origin: "*" }));
 
 const firebaseConfig = {
   apiKey: "AIzaSyBv4u6AM_0sP3q0GGYVXaGZa4bNFkg-6Lc",
@@ -26,7 +39,9 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 app.get("/getData", (req, res) => {
-  res.send("Server is active")
+  database.ref("data/Men/Shoes").on("value", (snap) => {
+    res.send(snap.val())
+  });
 });
 
 app.listen(port, () => {
