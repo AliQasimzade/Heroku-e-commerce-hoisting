@@ -26,13 +26,7 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 app.get("/getData", (req, res) => {
-  let table = [];
-  database.ref("data/Men/Shoes").on("value", (snap) => {
-    table.push(snap.val());
-  });
-  setTimeout(() => {
-    res.send(table);
-  }, 200);
+  res.send("Server is active")
 });
 
 app.listen(port, () => {
